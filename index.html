@@ -28,6 +28,22 @@ body {
   color: var(--text);
   line-height: 1.5;
   padding-bottom: 80px;
+  position: relative;
+}
+body::before {
+  content: "jennifer";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) rotate(-12deg);
+  font-size: 140px;
+  font-weight: 800;
+  color: rgba(232,67,147,0.04);
+  pointer-events: none;
+  z-index: -1;
+  letter-spacing: 24px;
+  text-transform: lowercase;
+  white-space: nowrap;
 }
 nav {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -478,6 +494,7 @@ h2:first-child { margin-top: 0; }
       <option value="mid" selected>✨ Medium</option>
       <option value="low">🌱 Low</option>
     </select>
+    <input id="task-ddl" type="date" style="max-width:140px;font-size:12px;padding:6px 8px;flex:0" title="Deadline">
     <button onclick="addTask()">+ Add</button>
   </div>
   <div class="card" id="task-list"></div>
@@ -603,6 +620,21 @@ h2:first-child { margin-top: 0; }
   </div>
 </div>
 
+</div>
+
+<!-- HABIT EDIT MODAL -->
+<div class="overlay" id="habit-edit-modal">
+  <div class="modal">
+    <h3>✏️ Edit Habit</h3>
+    <label>Habit name</label>
+    <input id="edit-habit-name" placeholder="Habit name" maxlength="40">
+    <label>Emoji</label>
+    <input id="edit-habit-emoji" placeholder="🌸" maxlength="2">
+    <div class="btn-row">
+      <button class="cancel-btn" onclick="document.getElementById('habit-edit-modal').classList.remove('show')">Cancel</button>
+      <button class="save-btn" onclick="saveEditHabit()">💾 Save</button>
+    </div>
+  </div>
 </div>
 
 <!-- SCHEDULE MODAL -->
@@ -789,7 +821,7 @@ function renderToday() {
       return `<div class="task-row">
         <div class="check ${t.done?'done':''}" onclick="toggleTask('${t.id}')"></div>
         <div class="info">
-          <div class="title ${t.done?'done':''}"><span class="priority-dot ${pClass}"></span>${escHtml(t.title)}</div>
+          <div class="title ${t.done?'done':''}"><span class="priority-dot ${pClass}"></span>${escHtml(t.title)} ${ddlHtml(t)}</div>
         </div>
       </div>`;
     }).join('');
@@ -834,6 +866,7 @@ function renderHabits() {
       <button class="check ${done?'done':''}" onclick="toggleHabit('${h.id}')">
         ${done ? '<i data-lucide="check" size="16"></i>' : ''}
       </button>
+      <button class="del-btn" onclick="openEditHabit('${h.id}')" title="Edit" style="opacity:0.3"><i data-lucide="pencil" size="14"></i></button>
       <button class="del-btn" onclick="deleteHabit('${h.id}')" title="Delete"><i data-lucide="x" size="14"></i></button>
     </div>`;
   }).join('');
@@ -903,7 +936,7 @@ function renderTasks() {
       <div class="check ${t.done?'done':''}" onclick="toggleTask('${t.id}')"></div>
       <div class="info">
         <div class="title ${t.done?'done':''}"><span class="priority-dot ${pClass}"></span>${escHtml(t.title)}</div>
-        <div class="meta">${({high:'🔥',mid:'✨',low:'🌱'}[t.priority])||'✨'} · ${t.createdAt?formatDate(t.createdAt.slice(0,10)):''}</div>
+        <div class="meta">${({high:'🔥',mid:'✨',low:'🌱'}[t.priority])||'✨'} · ${t.dueDate ? ' · 📅 '+formatDate(t.dueDate)+' '+ddlWarning(t.dueDate,t.done) : ''}${t.createdAt?' · created '+formatDate(t.createdAt.slice(0,10)):''}</div>
       </div>
       <button class="del-btn" onclick="deleteTask('${t.id}')" title="Delete"><i data-lucide="x" size="14"></i></button>
     </div>`;
@@ -912,7 +945,9 @@ function renderTasks() {
 
 function addTask() {
   const input=document.getElementById('new-task'); const title=input.value.trim(); if(!title)return;
-  data.tasks.push({ id:'t'+Date.now(), title, priority:document.getElementById('task-priority').value, done:false, createdAt:today() });
+  const ddl=document.getElementById('task-ddl'); const dueDate=ddl&&ddl.value?ddl.value:null;
+  data.tasks.push({ id:'t'+Date.now(), title, priority:document.getElementById('task-priority').value, done:false, createdAt:today(), dueDate });
+  if(ddl)ddl.value='';
   input.value=''; saveData(); renderAll();
 }
 function toggleTask(id) { const t=data.tasks.find(x=>x.id===id); if(!t)return; t.done=!t.done; t.doneAt=t.done?today():null; saveData(); renderAll(); }
