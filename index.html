@@ -65,6 +65,12 @@ nav button {
 nav button.active { color: var(--accent); font-weight: 600; }
 nav button.active i { color: var(--accent); }
 nav button i { font-size: 20px; }
+.nav-logo {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 6px; margin-right: 2px;
+  flex-shrink: 0;
+}
+.nav-logo svg { width: 24px; height: 24px; }
 .container { max-width: 640px; margin: 0 auto; padding: 16px; }
 .section { display: none; }
 .section.active { display: block; }
@@ -440,6 +446,15 @@ h2:first-child { margin-top: 0; }
 <body>
 
 <nav id="nav">
+  <div class="nav-logo" title="Growth Garden">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M16 4C16 4 10 8 10 14C10 17.3 12.7 20 16 20C19.3 20 22 17.3 22 14C22 8 16 4 16 4Z" fill="#e84393" opacity="0.3"/>
+      <path d="M16 8C16 8 13 10.5 13 14C13 15.7 14.3 17 16 17C17.7 17 19 15.7 19 14C19 10.5 16 8 16 8Z" fill="#fd79a8"/>
+      <rect x="15" y="18" width="2" height="8" rx="1" fill="#e84393" opacity="0.5"/>
+      <circle cx="16" cy="12" r="2" fill="#fff" opacity="0.6"/>
+      <path d="M8 28L16 24L24 28" stroke="#e84393" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+    </svg>
+  </div>
   <button data-tab="today" class="active"><i data-lucide="sparkles"></i>Today</button>
   <button data-tab="habits"><i data-lucide="check-circle"></i>Habits</button>
   <button data-tab="tasks"><i data-lucide="list-todo"></i>Tasks</button>
