@@ -36,15 +36,15 @@ nav {
   display: flex;
   justify-content: space-around;
   padding: 6px 0 env(safe-area-inset-bottom, 6px);
-  z-index: 100;
+  z-index: 100; overflow-x: auto;
 }
 nav button {
   background: none; border: none;
   display: flex; flex-direction: column; align-items: center;
   gap: 2px; font-size: 10px; color: var(--text2);
   padding: 4px 6px; cursor: pointer;
-  border-radius: var(--radius);
-  transition: .15s;
+  border-radius: var(--radius); white-space: nowrap;
+  transition: .15s; flex-shrink: 0;
 }
 nav button.active { color: var(--accent); font-weight: 600; }
 nav button.active i { color: var(--accent); }
@@ -140,6 +140,8 @@ h2:first-child { margin-top: 0; }
 .p-high { background: #d63031; }
 .p-mid { background: #fdcb6e; }
 .p-low { background: #a8577a; }
+
+/* Schedule */
 .schedule-grid {
   display: grid;
   grid-template-columns: 50px repeat(7, 1fr);
@@ -162,16 +164,19 @@ h2:first-child { margin-top: 0; }
   cursor: pointer;
   transition: .1s;
   position: relative;
+  display: flex; align-items: center; justify-content: center;
 }
 .schedule-grid .slot.has-event {
-  background: var(--accent);
   color: #fff;
   padding: 2px 4px;
   font-size: 9px;
   overflow: hidden;
   border-radius: 4px;
+  display: flex; align-items: center; gap: 2px;
 }
-.schedule-grid .slot.has-event.alt { background: var(--accent2); }
+.schedule-grid .slot .done-mark {
+  font-size: 8px; opacity: 0.7;
+}
 .skill-card {
   background: var(--surface);
   border-radius: var(--radius);
@@ -218,6 +223,29 @@ h2:first-child { margin-top: 0; }
 }
 .milestone .text { flex: 1; font-size: 13px; }
 .milestone .text.done { text-decoration: line-through; color: var(--text2); }
+
+/* Skill counter */
+.skill-counter {
+  display: flex; align-items: center; gap: 8px; margin: 8px 0;
+}
+.skill-counter .counter-num {
+  font-size: 24px; font-weight: 700; color: var(--accent);
+  min-width: 70px; text-align: center;
+}
+.skill-counter .counter-target { font-size: 14px; color: var(--text2); }
+.skill-counter button {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; color: var(--accent);
+  transition: .15s;
+}
+.skill-counter button:hover { background: var(--accent3); border-color: var(--accent); }
+.skill-counter button:active { background: var(--accent); color: #fff; }
+
+/* Timer */
 .timer-display {
   text-align: center; padding: 30px 0 20px;
 }
@@ -247,11 +275,9 @@ h2:first-child { margin-top: 0; }
 .timer-sessions {
   text-align: center; font-size: 13px; color: var(--text2);
 }
-.timer-stats {
-  display: flex; gap: 10px; margin-top: 14px;
-}
+.timer-stats { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .timer-stat {
-  flex: 1; text-align: center;
+  flex: 1; min-width: 70px; text-align: center;
   background: var(--accent3);
   border-radius: var(--radius);
   padding: 10px;
@@ -322,7 +348,8 @@ h2:first-child { margin-top: 0; }
   font-size: 14px; background: var(--bg);
   margin-bottom: 10px;
 }
-.modal .btn-row { display: flex; gap: 8px; justify-content: flex-end; }
+.modal label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 4px; margin-top: 8px; }
+.modal .btn-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 .modal .btn-row button {
   padding: 8px 16px; border: none; border-radius: var(--radius);
   font-size: 13px; font-weight: 600; cursor: pointer;
@@ -342,64 +369,56 @@ h2:first-child { margin-top: 0; }
 .setting-card p { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
 
 /* Coach */
-.coach-score {
-  text-align: center; padding: 20px 0;
-}
-.coach-score .big-score {
-  font-size: 56px; font-weight: 700;
-  background: linear-gradient(135deg, var(--accent2), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.coach-score { text-align: center; padding: 20px 0; }
+.coach-score .big-score { font-size: 56px; font-weight: 700; background: linear-gradient(135deg, var(--accent2), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .coach-score .out-of { font-size: 18px; color: var(--text2); }
-.coach-score .badge {
-  display: inline-block;
-  padding: 4px 16px;
-  border-radius: 20px;
-  font-size: 13px; font-weight: 600;
-  margin-top: 8px;
-}
+.coach-score .badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 8px; }
 .badge-great { background: #ffe0ec; color: var(--accent); }
 .badge-good { background: #fff3cd; color: #856404; }
 .badge-ok { background: var(--accent3); color: var(--text2); }
-.coach-feedback {
-  font-size: 14px; line-height: 1.7; padding: 8px 0; color: var(--text);
-}
+.coach-feedback { font-size: 14px; line-height: 1.7; padding: 8px 0; color: var(--text); }
 .coach-section { margin-top: 16px; }
 .coach-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--accent); }
 .coach-section ul { list-style: none; }
-.coach-section li {
-  padding: 4px 0; font-size: 13px;
-  display: flex; align-items: center; gap: 6px;
-}
-.coach-section li::before {
-  content: "🌸";
-  font-size: 12px;
-}
-.coach-history-item {
-  border-bottom: 1px solid var(--accent3);
-  padding: 12px 0;
-}
+.coach-section li { padding: 4px 0; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.coach-section li::before { content: "🌸"; font-size: 12px; }
+.coach-history-item { border-bottom: 1px solid var(--accent3); padding: 12px 0; }
 .coach-history-item:last-child { border-bottom: none; }
 .coach-history-item .date { font-size: 12px; color: var(--text2); }
 .coach-history-item .score { font-size: 20px; font-weight: 700; color: var(--accent); }
 
-/* Weekly summary */
-.week-chart {
-  display: flex; gap: 6px; margin-top: 10px; align-items: flex-end;
-}
-.week-bar {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-}
-.week-bar .bar {
-  width: 100%; background: var(--accent3);
-  border-radius: 4px 4px 0 0;
-  min-height: 4px;
-  transition: height .3s;
-}
+/* Week chart */
+.week-chart { display: flex; gap: 6px; margin-top: 10px; align-items: flex-end; }
+.week-bar { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.week-bar .bar { width: 100%; background: var(--accent3); border-radius: 4px 4px 0 0; min-height: 4px; transition: height .3s; }
 .week-bar .bar.fill { background: linear-gradient(0deg, var(--accent2), var(--accent)); }
-.week-bar .day-label { font-size: 10px; color: var(--text2); margin-top: 4px; }
+.week-bar .day-label { font-size: 10px; color: var(--text2); margin-top: 4px;text-align:center; }
+
+/* Schedule category colors */
+.cat-class { background: #74b9ff !important; }
+.cat-study { background: #55efc4 !important; color: #2d3436 !important; }
+.cat-exercise { background: #fdcb6e !important; color: #2d3436 !important; }
+.cat-fun { background: #fd79a8 !important; }
+.cat-work { background: #e17055 !important; }
+.cat-other { background: #b2bec3 !important; color: #2d3436 !important; }
+.cat-done { opacity: 0.6; text-decoration: line-through; }
+
+/* Schedule legend */
+.legend { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; font-size: 11px; color: var(--text2); }
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+/* Cute footer messages */
+.cute-messages [
+  "🌸 keep growing!",
+  "🦋 you're doing great",
+  "✨ one step at a time",
+  "🌱 every day counts",
+  "💖 you got this",
+  "🌟 be proud of yourself",
+  "🎀 small steps, big changes",
+  "🫧 you're a star",
+]
 </style>
 </head>
 <body>
@@ -433,19 +452,17 @@ h2:first-child { margin-top: 0; }
   <div class="card" id="today-tasks"></div>
   <h2>🏆 Latest Coach Score</h2>
   <div class="card" id="today-coach"></div>
-  <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text2)">
-    💖 Keep growing, one petal at a time
-  </div>
+  <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--text2)" id="cute-message"></div>
 </div>
 
 <!-- HABITS -->
 <div class="section" id="sec-habits">
   <h1>🌸 Habits</h1>
-  <div class="subtitle">Track daily and grow your streak</div>
+  <div class="subtitle">✨ Daily checklist — grow your streak!</div>
   <div class="input-row">
     <input id="new-habit" placeholder="New habit..." maxlength="40">
     <input id="new-emoji" placeholder="🌸" maxlength="2" style="max-width:50px">
-    <button onclick="addHabit()">Add</button>
+    <button onclick="addHabit()">+ Add</button>
   </div>
   <div class="card" id="habit-list"></div>
 </div>
@@ -453,15 +470,15 @@ h2:first-child { margin-top: 0; }
 <!-- TASKS -->
 <div class="section" id="sec-tasks">
   <h1>📋 Tasks</h1>
-  <div class="subtitle">Manage your to-dos by priority</div>
+  <div class="subtitle">🎀 Prioritize your day</div>
   <div class="input-row">
     <input id="new-task" placeholder="New task..." maxlength="60">
     <select id="task-priority">
-      <option value="high">High</option>
-      <option value="mid" selected>Medium</option>
-      <option value="low">Low</option>
+      <option value="high">🔥 High</option>
+      <option value="mid" selected>✨ Medium</option>
+      <option value="low">🌱 Low</option>
     </select>
-    <button onclick="addTask()">Add</button>
+    <button onclick="addTask()">+ Add</button>
   </div>
   <div class="card" id="task-list"></div>
 </div>
@@ -469,24 +486,21 @@ h2:first-child { margin-top: 0; }
 <!-- SCHEDULE -->
 <div class="section" id="sec-schedule">
   <h1>📅 Weekly Schedule</h1>
-  <div class="subtitle">Click a slot to add an activity</div>
+  <div class="subtitle">🦋 Plan your week, mark what's done!</div>
   <div class="card" style="overflow-x:auto">
     <div class="schedule-grid" id="schedule-grid"></div>
   </div>
-  <div style="margin-top:10px;display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text2)">
-    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--accent)"></span> Fixed
-    <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--accent2);margin-left:12px"></span> Flexible
-  </div>
+  <div class="legend" id="schedule-legend"></div>
 </div>
 
 <!-- SKILLS -->
 <div class="section" id="sec-skills">
   <h1>🎯 Skills</h1>
-  <div class="subtitle">Set goals and track milestones</div>
+  <div class="subtitle">🌟 Big goals, tracked step by step</div>
   <div class="input-row">
     <input id="new-skill" placeholder="Skill name" maxlength="30">
     <input id="skill-emoji" placeholder="🎯" maxlength="2" style="max-width:50px">
-    <button onclick="addSkill()">Add</button>
+    <button onclick="addSkill()">+ Add</button>
   </div>
   <div id="skill-list"></div>
 </div>
@@ -494,7 +508,7 @@ h2:first-child { margin-top: 0; }
 <!-- TIMER -->
 <div class="section" id="sec-timer">
   <h1>⏱ Focus Timer</h1>
-  <div class="subtitle">Focus, rest, repeat</div>
+  <div class="subtitle">🫧 Focus, rest, repeat</div>
   <div class="card">
     <div class="timer-display">
       <div class="time" id="timer-time">25:00</div>
@@ -504,7 +518,7 @@ h2:first-child { margin-top: 0; }
       <button class="btn-start" id="timer-start" onclick="startTimer()">Start</button>
       <button class="btn-reset" onclick="resetTimer()">Reset</button>
     </div>
-    <div class="timer-sessions">Today: <span id="timer-sessions">0</span> pomodoros</div>
+    <div class="timer-sessions">🍅 Today: <span id="timer-sessions">0</span> pomodoros</div>
     <div class="timer-stats" id="timer-stats">
       <div class="timer-stat"><div class="num" id="focus-today">0m</div><div class="label">Today</div></div>
       <div class="timer-stat"><div class="num" id="focus-week">0m</div><div class="label">This Week</div></div>
@@ -512,11 +526,11 @@ h2:first-child { margin-top: 0; }
     </div>
   </div>
   <div class="card timer-settings">
-    <label>Focus (minutes)</label>
+    <label>⏰ Focus (minutes)</label>
     <input id="timer-work" type="number" min="1" max="120" value="25" onchange="applyTimerSettings()">
-    <label>Short break (minutes)</label>
+    <label>🌸 Short break (minutes)</label>
     <input id="timer-break" type="number" min="1" max="30" value="5" onchange="applyTimerSettings()">
-    <label>Long break (minutes)</label>
+    <label>🌙 Long break (minutes)</label>
     <input id="timer-long" type="number" min="1" max="60" value="15" onchange="applyTimerSettings()">
   </div>
   <div class="card">
@@ -528,13 +542,11 @@ h2:first-child { margin-top: 0; }
 <!-- COACH -->
 <div class="section" id="sec-coach">
   <h1>💖 Coach</h1>
-  <div class="subtitle">Personal feedback to help you grow</div>
-
+  <div class="subtitle">🌟 Personalized feedback to help you bloom</div>
   <div id="coach-empty" class="card" style="text-align:center;padding:30px;color:var(--text2);font-size:14px">
     🌸 No coach evaluation yet<br><br>
     <span style="font-size:13px">Export your data from Settings, send it to Codex,<br>then import the evaluation here!</span>
   </div>
-
   <div id="coach-latest" style="display:none">
     <div class="card">
       <div class="coach-score">
@@ -544,30 +556,25 @@ h2:first-child { margin-top: 0; }
       </div>
       <div class="coach-feedback" id="coach-feedback-text"></div>
     </div>
-
     <div class="card coach-section" id="coach-praise-section">
       <h3>🌟 What went well</h3>
       <ul id="coach-praise"></ul>
     </div>
-
     <div class="card coach-section" id="coach-suggest-section">
       <h3>🌱 Areas to improve</h3>
       <ul id="coach-suggestions"></ul>
     </div>
-
     <div class="card coach-section" id="coach-summary-section">
       <h3>📊 Period Summary</h3>
       <p id="coach-summary" style="font-size:13px;color:var(--text2)"></p>
     </div>
   </div>
-
   <div class="setting-card">
     <h3>📥 Import Coach Evaluation</h3>
     <p>Upload the evaluation file from Codex to see your feedback here.</p>
     <input type="file" id="coach-import-file" accept=".json" style="margin-bottom:8px;font-size:14px" onchange="importCoachEval(event)">
     <div style="font-size:13px;font-weight:600" id="coach-import-status"></div>
   </div>
-
   <div class="card" id="coach-history-section">
     <h2>📜 Evaluation History</h2>
     <div id="coach-history"></div>
@@ -577,25 +584,22 @@ h2:first-child { margin-top: 0; }
 <!-- SETTINGS -->
 <div class="section" id="sec-settings">
   <h1>⚙️ Settings</h1>
-  <div class="subtitle">Backup, restore & data management</div>
-
+  <div class="subtitle">🫧 Backup, restore & data management</div>
   <div class="setting-card">
     <h3>📤 Export Data</h3>
     <p>Download all your data as JSON. Share this file with Codex for personalized coach feedback.</p>
-    <button class="btn-start" onclick="exportData()">Export as JSON</button>
+    <button class="btn-start" onclick="exportData()">📦 Export as JSON</button>
   </div>
-
   <div class="setting-card">
     <h3>📥 Import Data</h3>
     <p>Restore from a previous backup. This will replace all current data.</p>
     <input type="file" id="import-file" accept=".json" style="margin-bottom:8px;font-size:14px" onchange="importData(event)">
     <div style="font-size:13px;font-weight:600" id="import-status"></div>
   </div>
-
   <div class="setting-card">
     <h3>⚠️ Reset All Data</h3>
     <p>Clear everything and restore defaults. This cannot be undone!</p>
-    <button class="btn-start" onclick="resetAllData()" style="background:var(--danger);background:linear-gradient(135deg,var(--danger),#e84393)">Reset</button>
+    <button class="btn-start" onclick="resetAllData()" style="background:linear-gradient(135deg,var(--danger),#e84393)">🗑 Reset</button>
   </div>
 </div>
 
@@ -604,16 +608,29 @@ h2:first-child { margin-top: 0; }
 <!-- SCHEDULE MODAL -->
 <div class="overlay" id="schedule-modal">
   <div class="modal">
-    <h3 id="modal-title">Edit Activity</h3>
-    <input id="modal-activity" placeholder="Activity name" maxlength="30">
-    <select id="modal-color">
-      <option value="main">Fixed (pink)</option>
-      <option value="alt">Flexible (light pink)</option>
+    <h3 id="modal-title">📅 Edit Activity</h3>
+    <label>Activity name</label>
+    <input id="modal-activity" placeholder="What are you doing?" maxlength="30">
+    <label>Category</label>
+    <select id="modal-category">
+      <option value="class">📚 Class</option>
+      <option value="study">📖 Study</option>
+      <option value="exercise">🏃 Exercise</option>
+      <option value="fun">🎮 Fun</option>
+      <option value="work">💼 Work</option>
+      <option value="other">✨ Other</option>
     </select>
+    <div id="modal-done-row" style="display:none">
+      <label>Mark as done?</label>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <input type="checkbox" id="modal-done" style="width:18px;height:18px;cursor:pointer">
+        <span style="font-size:13px;color:var(--text2)">Completed ✓</span>
+      </div>
+    </div>
     <div class="btn-row">
-      <button class="del-btn" id="modal-delete" onclick="deleteScheduleEvent()">Delete</button>
+      <button class="del-btn" id="modal-delete" onclick="deleteScheduleEvent()">🗑 Delete</button>
       <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" onclick="saveScheduleEvent()">Save</button>
+      <button class="save-btn" onclick="saveScheduleEvent()">💾 Save</button>
     </div>
   </div>
 </div>
@@ -621,7 +638,31 @@ h2:first-child { margin-top: 0; }
 <script>
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const HOURS = Array.from({length:14},(_,i)=>i+7);
-const HABIT_EMOJIS = ['💪','📖','🧘','🏃','✍️','🎯','🌅','💤','🥗','🎨','🎵','🌱'];
+const HABIT_EMOJIS = ['💪','📖','🧘','🏃','✍️','🎯','🌅','💤','🥗','🎨','🎵','🌱','🦋','🌸','✨','🌟','🫧','💖','🎀','🫶','🌷','🍀','🌈','⭐','🦄'];
+
+const CATEGORIES = [
+  { id: 'class', label: '📚 Class', color: '#74b9ff' },
+  { id: 'study', label: '📖 Study', color: '#55efc4' },
+  { id: 'exercise', label: '🏃 Exercise', color: '#fdcb6e' },
+  { id: 'fun', label: '🎮 Fun', color: '#fd79a8' },
+  { id: 'work', label: '💼 Work', color: '#e17055' },
+  { id: 'other', label: '✨ Other', color: '#b2bec3' },
+];
+
+const CUTE_MESSAGES = [
+  '🌸 keep growing, one petal at a time',
+  '🦋 you\'re doing great!',
+  '✨ every small step counts',
+  '🌱 be proud of yourself',
+  '💖 you got this!',
+  '🌟 shine bright today',
+  '🎀 little wins add up',
+  '🫧 you\'re a star!',
+  '🌷 progress, not perfection',
+  '🍀 your future self is cheering',
+  '🌈 believe in yourself',
+  '⭐ you make a difference',
+];
 
 const DEFAULT = {
   habits: [
@@ -631,23 +672,19 @@ const DEFAULT = {
   ],
   tasks: [],
   schedule: {},
+  scheduleDone: {}, // key -> true/false
   skills: [
-    {id:'s1',name:'English',emoji:'🇬🇧',milestones:[
-      {id:'m1',text:'Master 1000 words',done:true},
-      {id:'m2',text:'Daily conversation',done:false},
-      {id:'m3',text:'Read an English book',done:false},
-    ]},
-    {id:'s2',name:'Writing',emoji:'✍️',milestones:[
-      {id:'m4',text:'Write weekly journal',done:true},
-      {id:'m5',text:'Finish a 2000-word article',done:false},
-    ]},
+    {id:'s1',name:'English 3000 words',emoji:'🇬🇧',target:3000,progress:0,milestones:[]},
+    {id:'s2',name:'Thick Paint',emoji:'🎨',target:100,progress:0,milestones:[]},
+    {id:'s3',name:'Movies',emoji:'🎬',target:100,progress:0,milestones:[]},
+    {id:'s4',name:'Books',emoji:'📚',target:100,progress:0,milestones:[]},
   ],
   timerSessions: 0,
   timerWork: 25,
   timerBreak: 5,
   timerLong: 15,
-  focusLog: {}, // date -> minutes
-  coachEvals: [], // array of coach evaluation objects
+  focusLog: {},
+  coachEvals: [],
 };
 
 let data;
@@ -675,22 +712,12 @@ function saveData() {
   localStorage.setItem('growth_data', JSON.stringify(toSave));
 }
 
-function today() {
-  return new Date().toISOString().slice(0,10);
-}
-
+function today() { return new Date().toISOString().slice(0,10); }
 function formatDate(iso) {
   const d = new Date(iso + 'T00:00:00');
-  const m = d.getMonth()+1;
-  const day = d.getDate();
-  return `${m}/${day}`;
+  return `${d.getMonth()+1}/${d.getDate()}`;
 }
-
-function daysAgo(n) {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return d.toISOString().slice(0,10);
-}
+function daysAgo(n) { const d = new Date(); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10); }
 
 // ====== NAV ======
 document.querySelectorAll('nav button').forEach(btn => {
@@ -703,7 +730,6 @@ document.querySelectorAll('nav button').forEach(btn => {
   });
 });
 
-// ====== RENDER ======
 function renderAll() {
   renderToday();
   renderHabits();
@@ -722,25 +748,22 @@ function renderToday() {
   let greet = '🌸 Good Morning';
   if (h >= 12 && h < 17) greet = '🌷 Good Afternoon';
   else if (h >= 17) greet = '🌙 Good Evening';
-  document.getElementById('greeting').textContent = greet;
+  document.getElementById('greeting').textContent = greet + ', Jennifer ✨';
   document.getElementById('today-date').textContent = formatDate(today());
 
   const td = today();
   const habitsDone = data.habits.filter(h => h.logs && h.logs[td]);
   document.getElementById('stat-habits').textContent = `${habitsDone.length}/${data.habits.length}`;
-  const maxStreak = Math.max(0, ...data.habits.map(h => h.streak || 0));
-  document.getElementById('stat-streak').textContent = maxStreak;
+  document.getElementById('stat-streak').textContent = Math.max(0, ...data.habits.map(h => h.streak || 0));
   const tasksDone = data.tasks.filter(t => t.done && t.doneAt === td);
   document.getElementById('stat-tasks').textContent = tasksDone.length;
-
-  // Focus today
   const focusToday = data.focusLog && data.focusLog[td] ? data.focusLog[td] : 0;
   document.getElementById('stat-focus').textContent = focusToday + 'm';
 
   // Today habits
   const container = document.getElementById('today-habits');
   if (data.habits.length === 0) {
-    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No habits yet. Add some in the Habits tab!</div>';
+    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No habits yet ✨</div>';
   } else {
     container.innerHTML = data.habits.map(h => {
       const done = h.logs && h.logs[td];
@@ -757,12 +780,12 @@ function renderToday() {
 
   // Today tasks
   const tContainer = document.getElementById('today-tasks');
-  const activeTasks = data.tasks.filter(t => !t.done).slice(0, 5);
+  const activeTasks = data.tasks.filter(t => !t.done).slice(0,5);
   if (activeTasks.length === 0) {
-    tContainer.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No pending tasks</div>';
+    tContainer.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">🎉 All done!</div>';
   } else {
     tContainer.innerHTML = activeTasks.map(t => {
-      const pClass = t.priority === 'high' ? 'p-high' : t.priority === 'mid' ? 'p-mid' : 'p-low';
+      const pClass = t.priority==='high'?'p-high':t.priority==='mid'?'p-mid':'p-low';
       return `<div class="task-row">
         <div class="check ${t.done?'done':''}" onclick="toggleTask('${t.id}')"></div>
         <div class="info">
@@ -772,18 +795,22 @@ function renderToday() {
     }).join('');
   }
 
-  // Today coach score
+  // Coach score
   const coachContainer = document.getElementById('today-coach');
   const evals = data.coachEvals || [];
   if (evals.length === 0) {
-    coachContainer.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No coach evaluation yet. Export your data from Settings and send it to Codex!</div>';
+    coachContainer.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No coach eval yet. 🎀 Export data from Settings & send to Codex!</div>';
   } else {
-    const latest = evals[evals.length - 1];
+    const latest = evals[evals.length-1];
     coachContainer.innerHTML = `<div style="display:flex;align-items:center;gap:12px">
       <div style="font-size:36px;font-weight:700;color:var(--accent)">${latest.score}/10</div>
-      <div style="flex:1;font-size:13px;color:var(--text2)">${latest.date ? formatDate(latest.date) : ''} — ${escHtml(latest.summary || '')}</div>
+      <div style="flex:1;font-size:13px;color:var(--text2)">${latest.date?formatDate(latest.date):''} — ${escHtml(latest.summary||'')}</div>
     </div>`;
   }
+
+  // Cute message
+  const msgIdx = new Date().getDate() % CUTE_MESSAGES.length;
+  document.getElementById('cute-message').textContent = CUTE_MESSAGES[msgIdx];
 }
 
 // ----- HABITS -----
@@ -791,7 +818,7 @@ function renderHabits() {
   const container = document.getElementById('habit-list');
   const td = today();
   if (data.habits.length === 0) {
-    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No habits yet. Add one above!</div>';
+    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No habits yet ✨</div>';
     return;
   }
   container.innerHTML = data.habits.map(h => {
@@ -803,7 +830,7 @@ function renderHabits() {
         <div class="name">${escHtml(h.name)}</div>
         ${weekHtml}
       </div>
-      <span class="streak">🔥 ${h.streak||0}</span>
+      <span class="streak">🔥 ${h.streak||0}d</span>
       <button class="check ${done?'done':''}" onclick="toggleHabit('${h.id}')">
         ${done ? '<i data-lucide="check" size="16"></i>' : ''}
       </button>
@@ -814,25 +841,22 @@ function renderHabits() {
 
 function renderMiniWeek(logs, td) {
   const days = [];
-  const d = new Date(td + 'T00:00:00');
-  for (let i = 6; i >= 0; i--) {
-    const dd = new Date(d);
-    dd.setDate(d.getDate() - i);
+  const d = new Date(td+'T00:00:00');
+  for (let i=6; i>=0; i--) {
+    const dd = new Date(d); dd.setDate(dd.getDate()-i);
     const key = dd.toISOString().slice(0,10);
-    const isToday = key === td;
-    const done = logs && logs[key];
-    days.push(`<div class="day ${done?'done':''} ${isToday?'today':''}">${dd.getDate()}</div>`);
+    days.push(`<div class="day ${logs&&logs[key]?'done':''} ${key===td?'today':''}">${dd.getDate()}</div>`);
   }
   return `<div class="mini-week">${days.join('')}</div>`;
 }
 
 function toggleHabit(id) {
-  const h = data.habits.find(x => x.id === id);
+  const h = data.habits.find(x => x.id===id);
   if (!h) return;
   const td = today();
   if (!h.logs) h.logs = {};
-  if (h.logs[td]) { delete h.logs[td]; }
-  else { h.logs[td] = true; }
+  if (h.logs[td]) delete h.logs[td];
+  else h.logs[td] = true;
   h.streak = calcStreak(h.logs);
   saveData();
   renderAll();
@@ -840,8 +864,7 @@ function toggleHabit(id) {
 
 function calcStreak(logs) {
   if (!logs) return 0;
-  const d = new Date();
-  let streak = 0;
+  const d = new Date(); let streak = 0;
   while (true) {
     const key = d.toISOString().slice(0,10);
     if (logs[key]) { streak++; d.setDate(d.getDate()-1); }
@@ -853,43 +876,34 @@ function calcStreak(logs) {
 function addHabit() {
   const input = document.getElementById('new-habit');
   const emojiInput = document.getElementById('new-emoji');
-  const name = input.value.trim();
-  if (!name) return;
+  const name = input.value.trim(); if (!name) return;
   let emoji = emojiInput.value.trim();
   if (!emoji) emoji = HABIT_EMOJIS[Math.floor(Math.random()*HABIT_EMOJIS.length)];
   data.habits.push({ id:'h'+Date.now(), name, emoji, logs:{}, streak:0 });
-  input.value = '';
-  emojiInput.value = '';
-  saveData();
-  renderAll();
+  input.value = ''; emojiInput.value = '';
+  saveData(); renderAll();
 }
 
-function deleteHabit(id) {
-  data.habits = data.habits.filter(h => h.id !== id);
-  saveData();
-  renderAll();
-}
+function deleteHabit(id) { data.habits = data.habits.filter(h => h.id!==id); saveData(); renderAll(); }
 
 // ----- TASKS -----
 function renderTasks() {
   const container = document.getElementById('task-list');
   if (data.tasks.length === 0) {
-    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No tasks yet</div>';
+    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No tasks yet ✨</div>';
     return;
   }
   const sorted = [...data.tasks].sort((a,b) => {
     if (a.done !== b.done) return a.done ? 1 : -1;
-    const pri = {high:0,mid:1,low:2};
-    return (pri[a.priority]||1) - (pri[b.priority]||1);
+    return ({high:0,mid:1,low:2}[a.priority]||1) - ({high:0,mid:1,low:2}[b.priority]||1);
   });
   container.innerHTML = sorted.map(t => {
-    const pClass = t.priority === 'high' ? 'p-high' : t.priority === 'mid' ? 'p-mid' : 'p-low';
-    const priLabel = {high:'High',mid:'Med',low:'Low'};
+    const pClass = t.priority==='high'?'p-high':t.priority==='mid'?'p-mid':'p-low';
     return `<div class="task-row">
       <div class="check ${t.done?'done':''}" onclick="toggleTask('${t.id}')"></div>
       <div class="info">
         <div class="title ${t.done?'done':''}"><span class="priority-dot ${pClass}"></span>${escHtml(t.title)}</div>
-        <div class="meta">${priLabel[t.priority]||'Med'} · ${t.createdAt ? formatDate(t.createdAt.slice(0,10)) : ''}</div>
+        <div class="meta">${({high:'🔥',mid:'✨',low:'🌱'}[t.priority])||'✨'} · ${t.createdAt?formatDate(t.createdAt.slice(0,10)):''}</div>
       </div>
       <button class="del-btn" onclick="deleteTask('${t.id}')" title="Delete"><i data-lucide="x" size="14"></i></button>
     </div>`;
@@ -897,503 +911,346 @@ function renderTasks() {
 }
 
 function addTask() {
-  const input = document.getElementById('new-task');
-  const title = input.value.trim();
-  if (!title) return;
-  const priority = document.getElementById('task-priority').value;
-  data.tasks.push({ id:'t'+Date.now(), title, priority, done:false, createdAt:today() });
-  input.value = '';
-  saveData();
-  renderAll();
+  const input=document.getElementById('new-task'); const title=input.value.trim(); if(!title)return;
+  data.tasks.push({ id:'t'+Date.now(), title, priority:document.getElementById('task-priority').value, done:false, createdAt:today() });
+  input.value=''; saveData(); renderAll();
 }
-
-function toggleTask(id) {
-  const t = data.tasks.find(x => x.id === id);
-  if (!t) return;
-  t.done = !t.done;
-  t.doneAt = t.done ? today() : null;
-  saveData();
-  renderAll();
-}
-
-function deleteTask(id) {
-  data.tasks = data.tasks.filter(t => t.id !== id);
-  saveData();
-  renderAll();
-}
+function toggleTask(id) { const t=data.tasks.find(x=>x.id===id); if(!t)return; t.done=!t.done; t.doneAt=t.done?today():null; saveData(); renderAll(); }
+function deleteTask(id) { data.tasks=data.tasks.filter(t=>t.id!==id); saveData(); renderAll(); }
 
 // ----- SCHEDULE -----
 let modalCell = null;
-
 function renderSchedule() {
   const grid = document.getElementById('schedule-grid');
   let html = '<div class="header-cell"></div>';
   DAYS.forEach(d => { html += `<div class="header-cell">${d}</div>`; });
+  const now = new Date();
+  const currentDay = (now.getDay()+6)%7;
+  const currentHour = now.getHours();
+
   HOURS.forEach(h => {
     const timeLabel = `${h.toString().padStart(2,'0')}:00`;
     html += `<div class="time-cell">${timeLabel}</div>`;
     DAYS.forEach((_, di) => {
       const key = `${di}-${h}`;
       const event = data.schedule[key];
-      const cls = event ? 'slot has-event' : 'slot';
-      const extraCls = event && event.color === 'alt' ? ' alt' : '';
-      const label = event ? escHtml(event.activity) : '';
-      html += `<div class="${cls}${extraCls}" data-cell="${key}" onclick="openSchedule('${key}')">${label}</div>`;
+      const isPast = di < currentDay || (di === currentDay && h < currentHour);
+      const done = data.scheduleDone && data.scheduleDone[key];
+      let cls = 'slot';
+      if (event) {
+        cls += ' has-event cat-' + (event.category || 'other');
+        if (done) cls += ' cat-done';
+      }
+      let label = '';
+      if (event) {
+        label = escHtml(event.activity);
+        if (done) label = '✓ ' + label;
+      }
+      html += `<div class="${cls}" data-cell="${key}" onclick="openSchedule('${key}')">${label}</div>`;
     });
   });
   grid.innerHTML = html;
+
+  // Legend
+  const legend = document.getElementById('schedule-legend');
+  legend.innerHTML = CATEGORIES.map(c => `<span class="legend-item"><span class="legend-dot" style="background:${c.color}"></span>${c.label}</span>`).join('');
 }
 
 function openSchedule(key) {
   modalCell = key;
   const event = data.schedule[key];
   document.getElementById('modal-activity').value = event ? event.activity : '';
-  document.getElementById('modal-color').value = event ? (event.color||'main') : 'main';
+  document.getElementById('modal-category').value = event ? (event.category||'other') : 'other';
   document.getElementById('modal-delete').style.display = event ? 'inline-block' : 'none';
-  document.getElementById('modal-title').textContent = event ? 'Edit Activity' : 'Add Activity';
+  document.getElementById('modal-title').textContent = event ? '📅 Edit Activity' : '📅 Add Activity';
+
+  // Show done checkbox for past events
+  const doneRow = document.getElementById('modal-done-row');
+  const [di, hStr] = key.split('-');
+  const dayIdx = parseInt(di);
+  const hour = parseInt(hStr);
+  const now = new Date();
+  const currentDay = (now.getDay()+6)%7;
+  const currentHour = now.getHours();
+  const isPast = dayIdx < currentDay || (dayIdx === currentDay && hour < currentHour);
+
+  if (event && isPast) {
+    doneRow.style.display = 'block';
+    document.getElementById('modal-done').checked = data.scheduleDone && data.scheduleDone[key];
+  } else {
+    doneRow.style.display = 'none';
+  }
+
   document.getElementById('schedule-modal').classList.add('show');
 }
 
-function closeModal() {
-  document.getElementById('schedule-modal').classList.remove('show');
-  modalCell = null;
-}
-
+function closeModal() { document.getElementById('schedule-modal').classList.remove('show'); modalCell = null; }
 function saveScheduleEvent() {
   if (!modalCell) return;
   const activity = document.getElementById('modal-activity').value.trim();
   if (!activity) return;
-  const color = document.getElementById('modal-color').value;
-  data.schedule[modalCell] = { activity, color };
-  saveData();
-  closeModal();
-  renderAll();
-}
+  const category = document.getElementById('modal-category').value;
+  data.schedule[modalCell] = { activity, category };
 
+  // Save done state
+  const doneCheckbox = document.getElementById('modal-done');
+  if (doneCheckbox.style.display !== 'none') {
+    if (!data.scheduleDone) data.scheduleDone = {};
+    data.scheduleDone[modalCell] = doneCheckbox.checked;
+  }
+
+  saveData(); closeModal(); renderAll();
+}
 function deleteScheduleEvent() {
   if (!modalCell) return;
   delete data.schedule[modalCell];
-  saveData();
-  closeModal();
-  renderAll();
+  if (data.scheduleDone) delete data.scheduleDone[modalCell];
+  saveData(); closeModal(); renderAll();
 }
-
-document.getElementById('schedule-modal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeModal();
-});
+document.getElementById('schedule-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
 // ----- SKILLS -----
 function renderSkills() {
   const container = document.getElementById('skill-list');
   if (data.skills.length === 0) {
-    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No skills yet. Add one above!</div>';
+    container.innerHTML = '<div style="color:var(--text2);font-size:13px;padding:8px 0">No skills yet ✨</div>';
     return;
   }
   container.innerHTML = data.skills.map(s => {
+    const hasTarget = s.target && s.target > 0;
+    const progress = hasTarget ? (s.progress || 0) : 0;
+    const pct = hasTarget ? Math.min(100, Math.round(progress / s.target * 100)) : 0;
+
+    // Count progress from milestones if no target
     const total = s.milestones.length || 1;
     const done = s.milestones.filter(m => m.done).length;
-    const pct = Math.round(done/total*100);
-    return `<div class="skill-card">
-      <div class="skill-header">
-        <span class="emoji">${s.emoji||'🎯'}</span>
-        <span class="name">${escHtml(s.name)}</span>
-        <span class="level">${pct}%</span>
-        <button class="del-btn" onclick="deleteSkill('${s.id}')" title="Delete" style="opacity:0.3"><i data-lucide="x" size="14"></i></button>
-      </div>
-      <div class="level-bar"><div class="fill" style="width:${pct}%"></div></div>
-      ${s.milestones.map(m => `
+    const pctFromMilestones = hasTarget ? 0 : Math.round(done/total*100);
+    const displayPct = hasTarget ? pct : pctFromMilestones;
+
+    let counterHtml = '';
+    if (hasTarget) {
+      counterHtml = `<div class="skill-counter">
+        <button onclick="adjSkill('${s.id}',-10)">-10</button>
+        <button onclick="adjSkill('${s.id}',-1)">-1</button>
+        <span class="counter-num">${progress}</span>
+        <span class="counter-target">/ ${s.target}</span>
+        <button onclick="adjSkill('${s.id}',1)">+1</button>
+        <button onclick="adjSkill('${s.id}',10)">+10</button>
+      </div>`;
+    }
+
+    let milestonesHtml = '';
+    if (s.milestones && s.milestones.length > 0) {
+      milestonesHtml = s.milestones.map(m => `
         <div class="milestone">
           <div class="check ${m.done?'done':''}" onclick="toggleMilestone('${s.id}','${m.id}')"></div>
           <span class="text ${m.done?'done':''}">${escHtml(m.text)}</span>
         </div>
-      `).join('')}
+      `).join('');
+    }
+
+    return `<div class="skill-card">
+      <div class="skill-header">
+        <span class="emoji">${s.emoji||'🎯'}</span>
+        <span class="name">${escHtml(s.name)}</span>
+        <span class="level">${displayPct}%</span>
+        <button class="del-btn" onclick="deleteSkill('${s.id}')" title="Delete" style="opacity:0.3"><i data-lucide="x" size="14"></i></button>
+      </div>
+      <div class="level-bar"><div class="fill" style="width:${displayPct}%"></div></div>
+      ${counterHtml}
+      ${milestonesHtml}
       <div class="input-row" style="margin-top:8px;margin-bottom:0">
-        <input id="ml-${s.id}" placeholder="New milestone..." maxlength="40">
+        <input id="ml-${s.id}" placeholder="${hasTarget?'Update progress or add milestone...':'New milestone...'}" maxlength="40">
         <button onclick="addMilestone('${s.id}')">Add</button>
       </div>
     </div>`;
   }).join('');
 }
 
+function adjSkill(skillId, delta) {
+  const s = data.skills.find(x => x.id === skillId);
+  if (!s) return;
+  s.progress = Math.max(0, Math.min(s.target || Infinity, (s.progress || 0) + delta));
+  saveData(); renderAll();
+}
+
 function addSkill() {
   const input = document.getElementById('new-skill');
   const emojiInput = document.getElementById('skill-emoji');
-  const name = input.value.trim();
-  if (!name) return;
-  data.skills.push({ id:'s'+Date.now(), name, emoji:emojiInput.value.trim()||'🎯', milestones:[] });
-  input.value = '';
-  emojiInput.value = '';
-  saveData();
-  renderAll();
+  const name = input.value.trim(); if (!name) return;
+  data.skills.push({ id:'s'+Date.now(), name, emoji:emojiInput.value.trim()||'🎯', target:0, progress:0, milestones:[] });
+  input.value = ''; emojiInput.value = '';
+  saveData(); renderAll();
 }
 
-function deleteSkill(id) {
-  data.skills = data.skills.filter(s => s.id !== id);
-  saveData();
-  renderAll();
-}
-
+function deleteSkill(id) { data.skills = data.skills.filter(s => s.id !== id); saveData(); renderAll(); }
 function toggleMilestone(skillId, milestoneId) {
   const s = data.skills.find(x => x.id === skillId);
   if (!s) return;
   const m = s.milestones.find(x => x.id === milestoneId);
   if (!m) return;
-  m.done = !m.done;
-  saveData();
-  renderAll();
+  m.done = !m.done; saveData(); renderAll();
 }
-
 function addMilestone(skillId) {
   const s = data.skills.find(x => x.id === skillId);
   if (!s) return;
   const input = document.getElementById('ml-'+skillId);
-  const text = input.value.trim();
-  if (!text) return;
+  const text = input.value.trim(); if (!text) return;
   s.milestones.push({ id:'m'+Date.now(), text, done:false });
-  input.value = '';
-  saveData();
-  renderAll();
+  input.value = ''; saveData(); renderAll();
 }
 
 // ----- TIMER -----
 function renderTimer() {
-  const timeEl = document.getElementById('timer-time');
-  const modeEl = document.getElementById('timer-mode');
-  if (!timeEl || !modeEl) return;
+  const timeEl=document.getElementById('timer-time');
+  const modeEl=document.getElementById('timer-mode');
+  if (!timeEl||!modeEl) return;
   if (data.timerInterval) return;
-  if (data.timerPaused) {
-    const total = data.timerTime;
-    timeEl.textContent = fmtTime(total);
-  } else {
-    data.timerTime = data.timerWork * 60;
-    data.timerMode = 'work';
-    data.timerRunning = false;
-    data.timerPaused = false;
-    timeEl.textContent = fmtTime(data.timerTime);
-  }
-  modeEl.textContent = data.timerMode === 'work' ? 'Focus' : 'Break';
-  document.getElementById('timer-sessions').textContent = data.timerSessions || 0;
-  document.getElementById('timer-work').value = data.timerWork;
-  document.getElementById('timer-break').value = data.timerBreak;
+  if (data.timerPaused) { timeEl.textContent=fmtTime(data.timerTime); }
+  else { data.timerTime=data.timerWork*60; data.timerMode='work'; data.timerRunning=false; data.timerPaused=false; timeEl.textContent=fmtTime(data.timerTime); }
+  modeEl.textContent=data.timerMode==='work'?'Focus':'Break';
+  document.getElementById('timer-sessions').textContent=data.timerSessions||0;
+  document.getElementById('timer-work').value=data.timerWork;
+  document.getElementById('timer-break').value=data.timerBreak;
 
-  // Focus stats
-  const td = today();
-  const focusToday = data.focusLog && data.focusLog[td] ? data.focusLog[td] : 0;
-  document.getElementById('focus-today').textContent = focusToday + 'm';
+  const td=today();
+  document.getElementById('focus-today').textContent=(data.focusLog&&data.focusLog[td]||0)+'m';
+  let weekTotal=0; for(let i=0;i<7;i++){weekTotal+=(data.focusLog&&data.focusLog[daysAgo(i)])||0;}
+  document.getElementById('focus-week').textContent=weekTotal+'m';
+  let monthTotal=0; const now=new Date(); const ms=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  if(data.focusLog){for(const[d,m]of Object.entries(data.focusLog)){if(d.startsWith(ms))monthTotal+=m;}}
+  document.getElementById('focus-month').textContent=monthTotal+'m';
 
-  // This week
-  let weekTotal = 0;
-  for (let i = 0; i < 7; i++) {
-    const d = daysAgo(i);
-    weekTotal += (data.focusLog && data.focusLog[d]) || 0;
-  }
-  document.getElementById('focus-week').textContent = weekTotal + 'm';
-
-  // This month
-  let monthTotal = 0;
-  const now = new Date();
-  const monthStart = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
-  if (data.focusLog) {
-    for (const [date, mins] of Object.entries(data.focusLog)) {
-      if (date.startsWith(monthStart)) monthTotal += mins;
-    }
-  }
-  document.getElementById('focus-month').textContent = monthTotal + 'm';
-
-  // Week chart
-  const chartContainer = document.getElementById('week-chart');
-  let maxDay = 1;
-  const chartData = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = daysAgo(i);
-    const mins = (data.focusLog && data.focusLog[d]) || 0;
-    if (mins > maxDay) maxDay = mins;
-    chartData.push({ day: DAYS[(new Date().getDay() + 6 - i) % 7], mins, date: d });
-  }
-  chartContainer.innerHTML = chartData.map(d => {
-    const pct = maxDay > 0 ? (d.mins / maxDay * 100) : 0;
-    const fill = d.mins > 0 ? 'fill' : '';
-    const isToday = d.date === today();
-    const barStyle = isToday ? `border:1px solid var(--accent)` : '';
-    return `<div class="week-bar">
-      <div class="bar ${fill}" style="height:${Math.max(4, pct)}px;${barStyle}"></div>
-      <div class="day-label">${d.day}${isToday?'*':''}<br>${d.mins}m</div>
-    </div>`;
+  let maxDay=1; const chartData=[];
+  for(let i=6;i>=0;i--){const d=daysAgo(i);const m=(data.focusLog&&data.focusLog[d])||0;if(m>maxDay)maxDay=m;chartData.push({day:DAYS[(new Date().getDay()+6-i)%7],mins:m,date:d});}
+  document.getElementById('week-chart').innerHTML=chartData.map(d=>{
+    const pct=maxDay>0?(d.mins/maxDay*100):0;
+    return `<div class="week-bar"><div class="bar ${d.mins>0?'fill':''}" style="height:${Math.max(4,pct)}px"></div><div class="day-label">${d.day}<br>${d.mins}m</div></div>`;
   }).join('');
 
-  const startBtn = document.getElementById('timer-start');
-  if (data.timerRunning) {
-    startBtn.textContent = data.timerPaused ? 'Resume' : 'Pause';
-    startBtn.className = data.timerPaused ? 'btn-start' : 'btn-pause';
-    startBtn.onclick = data.timerPaused ? resumeTimer : pauseTimer;
-  } else {
-    startBtn.textContent = 'Start';
-    startBtn.className = 'btn-start';
-    startBtn.onclick = startTimer;
-  }
+  const btn=document.getElementById('timer-start');
+  if(data.timerRunning){btn.textContent=data.timerPaused?'Resume':'Pause';btn.className=data.timerPaused?'btn-start':'btn-pause';btn.onclick=data.timerPaused?resumeTimer:pauseTimer;}
+  else{btn.textContent='Start';btn.className='btn-start';btn.onclick=startTimer;}
 }
-
-function fmtTime(s) {
-  const m = Math.floor(s/60);
-  const sec = s % 60;
-  return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+function fmtTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function startTimer(){
+  if(data.timerRunning)return;
+  if(data.timerPaused){resumeTimer();return;}
+  data.timerRunning=true; data.timerPaused=false;
+  if(!data.timerTime||data.timerTime<=0)data.timerTime=data.timerWork*60;
+  data.timerSessionStart=Date.now();
+  data.timerInterval=setInterval(tick,1000);
+  saveData();renderTimer();
 }
-
-function startTimer() {
-  if (data.timerRunning) return;
-  if (data.timerPaused) { resumeTimer(); return; }
-  data.timerRunning = true;
-  data.timerPaused = false;
-  if (!data.timerTime || data.timerTime <= 0) data.timerTime = data.timerWork * 60;
-  data.timerSessionStart = Date.now();
-  data.timerInterval = setInterval(tick, 1000);
-  saveData();
+function pauseTimer(){if(!data.timerRunning)return;data.timerPaused=true;if(data.timerInterval){clearInterval(data.timerInterval);data.timerInterval=null;}renderTimer();}
+function resumeTimer(){if(!data.timerPaused)return;data.timerPaused=false;data.timerInterval=setInterval(tick,1000);renderTimer();}
+function resetTimer(){
+  data.timerRunning=false;data.timerPaused=false;
+  if(data.timerInterval){clearInterval(data.timerInterval);data.timerInterval=null;}
+  data.timerTime=data.timerWork*60;data.timerMode='work';
+  document.getElementById('timer-time').textContent=fmtTime(data.timerTime);
+  document.getElementById('timer-mode').textContent='Focus';
   renderTimer();
 }
-
-function pauseTimer() {
-  if (!data.timerRunning) return;
-  data.timerPaused = true;
-  if (data.timerInterval) { clearInterval(data.timerInterval); data.timerInterval = null; }
-  renderTimer();
-}
-
-function resumeTimer() {
-  if (!data.timerPaused) return;
-  data.timerPaused = false;
-  data.timerInterval = setInterval(tick, 1000);
-  renderTimer();
-}
-
-function resetTimer() {
-  data.timerRunning = false;
-  data.timerPaused = false;
-  if (data.timerInterval) { clearInterval(data.timerInterval); data.timerInterval = null; }
-  data.timerTime = data.timerWork * 60;
-  data.timerMode = 'work';
-  document.getElementById('timer-time').textContent = fmtTime(data.timerTime);
-  document.getElementById('timer-mode').textContent = 'Focus';
-  renderTimer();
-}
-
-function tick() {
-  if (data.timerPaused) return;
+function tick(){
+  if(data.timerPaused)return;
   data.timerTime--;
-  if (data.timerTime <= 0) {
-    // Session completed
-    if (data.timerMode === 'work') {
-      data.timerSessions = (data.timerSessions||0) + 1;
-      // Log focus time
-      if (data.timerSessionStart) {
-        const elapsed = Math.round((Date.now() - data.timerSessionStart) / 60000);
-        const td = today();
-        if (!data.focusLog) data.focusLog = {};
-        data.focusLog[td] = (data.focusLog[td] || 0) + Math.max(elapsed, 1);
-        data.timerSessionStart = null;
-      }
-      data.timerMode = 'break';
-      data.timerTime = data.timerBreak * 60;
-    } else {
-      data.timerMode = 'work';
-      data.timerTime = data.timerWork * 60;
-      data.timerSessionStart = Date.now();
-    }
+  if(data.timerTime<=0){
+    if(data.timerMode==='work'){
+      data.timerSessions=(data.timerSessions||0)+1;
+      if(data.timerSessionStart){const elapsed=Math.round((Date.now()-data.timerSessionStart)/60000);const td=today();if(!data.focusLog)data.focusLog={};data.focusLog[td]=(data.focusLog[td]||0)+Math.max(elapsed,1);data.timerSessionStart=null;}
+      data.timerMode='break';data.timerTime=data.timerBreak*60;
+    } else { data.timerMode='work';data.timerTime=data.timerWork*60;data.timerSessionStart=Date.now(); }
   }
-  document.getElementById('timer-time').textContent = fmtTime(data.timerTime);
-  document.getElementById('timer-mode').textContent = data.timerMode === 'work' ? 'Focus' : 'Break';
-  document.getElementById('timer-sessions').textContent = data.timerSessions || 0;
-  saveData();
-  renderTimer();
+  document.getElementById('timer-time').textContent=fmtTime(data.timerTime);
+  document.getElementById('timer-mode').textContent=data.timerMode==='work'?'Focus':'Break';
+  document.getElementById('timer-sessions').textContent=data.timerSessions||0;
+  saveData();renderTimer();
 }
-
-function applyTimerSettings() {
-  if (data.timerRunning) return;
-  const w = parseInt(document.getElementById('timer-work').value);
-  const b = parseInt(document.getElementById('timer-break').value);
-  if (w > 0) data.timerWork = w;
-  if (b > 0) data.timerBreak = b;
-  data.timerTime = data.timerWork * 60;
-  data.timerMode = 'work';
-  document.getElementById('timer-time').textContent = fmtTime(data.timerTime);
-  document.getElementById('timer-mode').textContent = 'Focus';
-  saveData();
-  renderTimer();
+function applyTimerSettings(){
+  if(data.timerRunning)return;
+  const w=parseInt(document.getElementById('timer-work').value);const b=parseInt(document.getElementById('timer-break').value);
+  if(w>0)data.timerWork=w;if(b>0)data.timerBreak=b;
+  data.timerTime=data.timerWork*60;data.timerMode='work';
+  document.getElementById('timer-time').textContent=fmtTime(data.timerTime);
+  document.getElementById('timer-mode').textContent='Focus';
+  saveData();renderTimer();
 }
 
 // ----- COACH -----
 function renderCoach() {
-  const evals = data.coachEvals || [];
-  const latestEl = document.getElementById('coach-latest');
-  const emptyEl = document.getElementById('coach-empty');
-
-  if (evals.length === 0) {
-    emptyEl.style.display = 'block';
-    latestEl.style.display = 'none';
-  } else {
-    emptyEl.style.display = 'none';
-    latestEl.style.display = 'block';
-    const latest = evals[evals.length - 1];
-
-    document.getElementById('coach-score-num').textContent = latest.score;
-    const badge = document.getElementById('coach-badge');
-    if (latest.score >= 8) { badge.textContent = '⭐ Excellent!'; badge.className = 'badge badge-great'; }
-    else if (latest.score >= 6) { badge.textContent = '👍 Good job!'; badge.className = 'badge badge-good'; }
-    else { badge.textContent = '🌱 Keep trying!'; badge.className = 'badge badge-ok'; }
-
-    document.getElementById('coach-feedback-text').textContent = latest.feedback || latest.summary || '';
-
-    // Praise
-    const praiseEl = document.getElementById('coach-praise');
-    const praiseSection = document.getElementById('coach-praise-section');
-    if (latest.praise && latest.praise.length > 0) {
-      praiseSection.style.display = 'block';
-      praiseEl.innerHTML = latest.praise.map(p => `<li>${escHtml(p)}</li>`).join('');
-    } else {
-      praiseSection.style.display = 'none';
-    }
-
-    // Suggestions
-    const suggestEl = document.getElementById('coach-suggestions');
-    const suggestSection = document.getElementById('coach-suggest-section');
-    if (latest.suggestions && latest.suggestions.length > 0) {
-      suggestSection.style.display = 'block';
-      suggestEl.innerHTML = latest.suggestions.map(s => `<li>${escHtml(s)}</li>`).join('');
-    } else {
-      suggestSection.style.display = 'none';
-    }
-
-    // Summary stats
-    const summarySection = document.getElementById('coach-summary-section');
-    const summaryEl = document.getElementById('coach-summary');
-    if (latest.focusMinutesTotal !== undefined || latest.periodStart) {
-      summarySection.style.display = 'block';
-      let summaryText = '';
-      if (latest.periodStart && latest.periodEnd) {
-        summaryText += `Period: ${formatDate(latest.periodStart)} - ${formatDate(latest.periodEnd)}`;
-      }
-      if (latest.focusMinutesTotal !== undefined) {
-        summaryText += (summaryText ? ' · ' : '') + `Total focus: ${latest.focusMinutesTotal}m`;
-      }
-      summaryEl.textContent = summaryText || 'No summary data';
-    } else {
-      summarySection.style.display = 'block';
-      summaryEl.textContent = latest.summary || '';
-    }
+  const evals=data.coachEvals||[];
+  document.getElementById('coach-empty').style.display=evals.length===0?'block':'none';
+  document.getElementById('coach-latest').style.display=evals.length===0?'none':'block';
+  if(evals.length>0){
+    const latest=evals[evals.length-1];
+    document.getElementById('coach-score-num').textContent=latest.score;
+    const badge=document.getElementById('coach-badge');
+    if(latest.score>=8){badge.textContent='⭐ Excellent!';badge.className='badge badge-great';}
+    else if(latest.score>=6){badge.textContent='👍 Good job!';badge.className='badge badge-good';}
+    else{badge.textContent='🌱 Keep trying!';badge.className='badge badge-ok';}
+    document.getElementById('coach-feedback-text').textContent=latest.feedback||latest.summary||'';
+    const praiseEl=document.getElementById('coach-praise');const praiseSection=document.getElementById('coach-praise-section');
+    if(latest.praise&&latest.praise.length>0){praiseSection.style.display='block';praiseEl.innerHTML=latest.praise.map(p=>`<li>${escHtml(p)}</li>`).join('');}else{praiseSection.style.display='none';}
+    const suggestEl=document.getElementById('coach-suggestions');const suggestSection=document.getElementById('coach-suggest-section');
+    if(latest.suggestions&&latest.suggestions.length>0){suggestSection.style.display='block';suggestEl.innerHTML=latest.suggestions.map(s=>`<li>${escHtml(s)}</li>`).join('');}else{suggestSection.style.display='none';}
   }
-
-  // History
-  const historyEl = document.getElementById('coach-history');
-  if (evals.length <= 1) {
-    historyEl.innerHTML = '<div style="color:var(--text2);font-size:13px">No history yet</div>';
-  } else {
-    historyEl.innerHTML = [...evals].reverse().map(e => `
-      <div class="coach-history-item">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span class="date">${e.date ? formatDate(e.date) : 'Unknown date'}</span>
-          <span class="score">${e.score}/10</span>
-        </div>
-        <div style="font-size:13px;color:var(--text2);margin-top:4px">${escHtml(e.summary || e.feedback || '')}</div>
-      </div>
-    `).join('');
-  }
-
-  document.getElementById('coach-import-status').textContent = '';
+  const historyEl=document.getElementById('coach-history');
+  if(evals.length<=1)historyEl.innerHTML='<div style="color:var(--text2);font-size:13px">No history yet</div>';
+  else historyEl.innerHTML=[...evals].reverse().map(e=>`<div class="coach-history-item"><div style="display:flex;justify-content:space-between;align-items:center"><span class="date">${e.date?formatDate(e.date):''}</span><span class="score">${e.score}/10</span></div><div style="font-size:13px;color:var(--text2);margin-top:4px">${escHtml(e.summary||e.feedback||'')}</div></div>`).join('');
+  document.getElementById('coach-import-status').textContent='';
 }
-
-function importCoachEval(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('coach-import-status');
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      // Validate it's a coach evaluation
-      if (imported.type !== 'coach_evaluation' && typeof imported.score !== 'number') {
-        status.textContent = '❌ Not a valid coach evaluation file';
-        return;
-      }
-      if (!data.coachEvals) data.coachEvals = [];
-      data.coachEvals.push({
-        date: imported.date || today(),
-        score: imported.score,
-        maxScore: imported.maxScore || 10,
-        summary: imported.summary || '',
-        feedback: imported.feedback || '',
-        praise: imported.praise || [],
-        suggestions: imported.suggestions || [],
-        focusMinutesTotal: imported.focusMinutesTotal,
-        periodStart: imported.periodStart,
-        periodEnd: imported.periodEnd,
-      });
-      saveData();
-      status.textContent = '✅ Coach evaluation imported!';
-      status.style.color = 'var(--accent)';
-      renderCoach();
-    } catch(err) {
-      status.textContent = '❌ Parse error: ' + err.message;
-    }
+function importCoachEval(event){
+  const file=event.target.files[0];if(!file)return;
+  const status=document.getElementById('coach-import-status');
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(imported.type!=='coach_evaluation'&&typeof imported.score!=='number'){status.textContent='❌ Not a valid coach evaluation';return;}
+      if(!data.coachEvals)data.coachEvals=[];
+      data.coachEvals.push({date:imported.date||today(),score:imported.score,maxScore:imported.maxScore||10,summary:imported.summary||'',feedback:imported.feedback||'',praise:imported.praise||[],suggestions:imported.suggestions||[],focusMinutesTotal:imported.focusMinutesTotal,periodStart:imported.periodStart,periodEnd:imported.periodEnd,});
+      saveData();status.textContent='✅ Coach evaluation imported!';status.style.color='var(--accent)';renderCoach();
+    }catch(err){status.textContent='❌ Error: '+err.message;}
   };
   reader.readAsText(file);
 }
 
 // ----- SETTINGS -----
-function exportData() {
-  const raw = localStorage.getItem('growth_data');
-  if (!raw) { alert('No data to export'); return; }
-  const blob = new Blob([raw], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'growth-garden-backup-' + today() + '.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+function exportData(){
+  const raw=localStorage.getItem('growth_data');
+  if(!raw){alert('No data to export');return;}
+  const blob=new Blob([raw],{type:'application/json'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='growth-garden-backup-'+today()+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
-
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('import-status');
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported.habits && !imported.tasks && !imported.skills) {
-        status.textContent = '❌ Invalid backup file';
-        return;
-      }
-      localStorage.setItem('growth_data', JSON.stringify(imported));
-      status.textContent = '✅ Imported! Refreshing...';
-      status.style.color = 'var(--accent)';
-      setTimeout(() => location.reload(), 1000);
-    } catch(err) {
-      status.textContent = '❌ Error: ' + err.message;
-    }
+function importData(event){
+  const file=event.target.files[0];if(!file)return;
+  const status=document.getElementById('import-status');
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!imported.habits&&!imported.tasks&&!imported.skills){status.textContent='❌ Invalid backup file';return;}
+      localStorage.setItem('growth_data',JSON.stringify(imported));
+      status.textContent='✅ Imported! Refreshing...';status.style.color='var(--accent)';
+      setTimeout(()=>location.reload(),1000);
+    }catch(err){status.textContent='❌ Error: '+err.message;}
   };
   reader.readAsText(file);
 }
-
-function resetAllData() {
-  if (!confirm('Reset all data? This cannot be undone!')) return;
+function resetAllData(){
+  if(!confirm('Reset all data? This cannot be undone!'))return;
   localStorage.removeItem('growth_data');
-  document.getElementById('import-status').textContent = '✅ Reset. Refreshing...';
-  document.getElementById('import-status').style.color = 'var(--accent)';
-  setTimeout(() => location.reload(), 1000);
+  document.getElementById('import-status').textContent='✅ Reset. Refreshing...';document.getElementById('import-status').style.color='var(--accent)';
+  setTimeout(()=>location.reload(),1000);
 }
-
-// ----- UTIL -----
-function escHtml(s) {
-  const div = document.createElement('div');
-  div.textContent = s;
-  return div.innerHTML;
-}
+function escHtml(s){const div=document.createElement('div');div.textContent=s;return div.innerHTML;}
 
 // ----- INIT -----
 loadData();
 renderAll();
-if (window.lucide) lucide.createIcons();
+if(window.lucide) lucide.createIcons();
 </script>
 </body>
 </html>
